@@ -2,6 +2,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tucky/Drawer/theme_manager.dart';
 // import 'package:tucky/Seite/Seite_1/sign_in.dart';
 // import 'package:tucky/Drawer/profil.dart';
 // import 'package:tucky/Seite/Seite_1/first_page.dart';
@@ -24,11 +25,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ValueListenableBuilder<ThemeMode>(
+  valueListenable: ThemeManager.themeMode,
+  builder: (context, themeMode, child) {
     return MaterialApp(
-      title: 'Meine Webseite',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeMode,
       home: const HomePage(),
     );
+  },
+);
   }
 }
 
@@ -38,11 +45,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   // Doppelpunkt statt Gleichheitszeichen
-      //   title: const Text('Startseite'),
-      //   backgroundColor: Color.fromARGB(255, 239, 195, 202),
-      // ),
+      appBar: AppBar(
+        // Doppelpunkt statt Gleichheitszeichen
+        title: const Text('Startseite'),
+        backgroundColor: Color.fromARGB(255, 239, 195, 202),
+      ),
       // body: StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (context, snapshot) {

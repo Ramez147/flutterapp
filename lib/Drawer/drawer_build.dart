@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'einstellung.dart';
 import 'about_us.dart';
 import 'logout.dart';
+import 'storageroom.dart';
 import 'package:tucky/Seite/Seite_3/third_page.dart';
 import 'package:tucky/Seite/Seite_2/second_page.dart';
 import 'package:tucky/Drawer/profilFolder/profil.dart';
@@ -67,13 +68,6 @@ class MyNavigationDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('abmelden'),
-            onTap: () {
-              Logout(context).logout();
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.person),
             title: const Text('Profil'),
             onTap: () {
@@ -81,6 +75,23 @@ class MyNavigationDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => Profil()),
               );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text('storage room'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Storageroom()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text('abmelden'),
+            onTap: () {
+              Logout(context).logout();
             },
           ),
           ListTile(

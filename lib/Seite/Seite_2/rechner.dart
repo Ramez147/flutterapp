@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CalculatorDialog extends StatefulWidget {
+  const CalculatorDialog({super.key});
+
   @override
   _CalculatorDialogState createState() => _CalculatorDialogState();
 }

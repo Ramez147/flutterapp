@@ -14,53 +14,20 @@ class _ProfilState extends State<Profil> {
   File? selectedImage;
   final ImagePicker _picker = ImagePicker();
 
+  // TextEditingController für die TextFields
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController streetController = TextEditingController();
+  final TextEditingController zipController = TextEditingController();
+
+  // Vereinfachte Geschlechter-Liste
   final List<String> genders = [
     'Männlich',
     'Weiblich',
     'Divers',
     'Keine Angabe',
-    'Nicht-binär',
-    'ladyboy',
-    'Genderqueer',
-    'Genderfluid',
-    'Agender',
-    'Bigender',
-    'Demiboy',
-    'Demigirl',
-    'Androgyn',
-    'Transmann',
-    'Transfrau',
-    'Two-Spirit',
-    'Pangender',
-    'Neutrois',
-    'Genderflux',
-    'Deminonbinary',
-    'Intergeschlechtlich',
-    'Aporagender',
-    'Maverique',
-    'Xenogender',
-    'Polygender',
   ];
 
-  // Future<void> _pickImageFromGallery() async {
-  //   try {
-  //     final XFile? image = await _picker.pickImage(
-  //       source: ImageSource.gallery,
-  //       maxWidth: 1800,
-  //       maxHeight: 1800,
-  //       imageQuality: 80,
-  //     );
-
-  //     if (image != null) {
-  //       setState(() {
-  //         selectedImage = File(image.path);
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print('Fehler beim Auswählen des Bildes: $e');
-  //     _showErrorSnackbar('Fehler beim Auswählen des Bildes');
-  //   }
-  // }
   String? selectedPokemonImage;
 
   final List<String> pokemonImages = [
@@ -82,110 +49,55 @@ class _ProfilState extends State<Profil> {
   void _selectPokemonImage() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
+          height: MediaQuery.of(context).size.height * 0.7,
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // Header
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.pink[50],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Pokémon auswählen',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ],
+              Text(
+                'Pokémon auswählen',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.pink[700],
                 ),
               ),
-
-              // Pokémon Grid
+              const SizedBox(height: 16),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 1,
-                        ),
-                    itemCount: pokemonImages.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedPokemonImage = pokemonImages[index];
-                            selectedImage =
-                                null; // Entferne das File-Bild wenn Pokémon ausgewählt
-                          });
-                          Navigator.of(context).pop();
-                          _showSuccessSnackbar('Pokémon ausgewählt');
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color:
-                                  selectedPokemonImage == pokemonImages[index]
-                                  ? Colors.blue
-                                  : Colors.grey[300]!,
-                              width:
-                                  selectedPokemonImage == pokemonImages[index]
-                                  ? 3
-                                  : 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              pokemonImages[index],
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey[200],
-                                  child: const Icon(Icons.error),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
                   ),
+                  itemCount: pokemonImages.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedPokemonImage = pokemonImages[index];
+                          selectedImage = null;
+                        });
+                        Navigator.of(context).pop();
+                        _showSnackbar('Pokémon ausgewählt');
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: selectedPokemonImage == pokemonImages[index]
+                                ? Colors.blue
+                                : Colors.grey,
+                          ),
+                        ),
+                        child: Image.asset(
+                          pokemonImages[index],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -195,10 +107,10 @@ class _ProfilState extends State<Profil> {
     );
   }
 
-  Future<void> _takePhotoWithCamera() async {
+  Future<void> _selectPhotoFromGallery() async {
     try {
       final XFile? photo = await _picker.pickImage(
-        source: ImageSource.camera,
+        source: ImageSource.gallery,
         maxWidth: 1800,
         maxHeight: 1800,
         imageQuality: 80,
@@ -207,255 +119,273 @@ class _ProfilState extends State<Profil> {
       if (photo != null) {
         setState(() {
           selectedImage = File(photo.path);
+          selectedPokemonImage =
+              null; // Entferne Pokémon-Bild wenn Foto ausgewählt
+        });
+        _showSnackbar('Foto ausgewählt');
+      }
+    } catch (e) {
+      _showSnackbar('Fehler beim Auswählen des Fotos');
+    }
+  }
+
+  Future<void> _takePhotoWithCamera() async {
+    try {
+      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+      if (photo != null) {
+        setState(() {
+          selectedImage = File(photo.path);
+          selectedPokemonImage = null;
         });
       }
     } catch (e) {
-      print('Fehler beim Aufnehmen des Fotos: $e');
-      _showErrorSnackbar('Fehler beim Aufnehmen des Fotos');
+      _showSnackbar('Fehler beim Aufnehmen des Fotos');
     }
   }
 
   void _removeImage() {
     setState(() {
       selectedPokemonImage = null;
+      selectedImage = null;
     });
-    _showSuccessSnackbar('Profilbild entfernt');
+    _showSnackbar('Profilbild entfernt');
   }
 
-  void _showErrorSnackbar(String message) {
+  void _showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackBar(
+        content: Text(message),
+        backgroundColor: message.contains('Fehler') ? Colors.red : Colors.green,
+      ),
     );
   }
 
-  void _showSuccessSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.green),
+  // Vereinfachte Hilfsmethode für Text-Felder
+  Widget _buildSimpleField(String label, TextEditingController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          height: 48,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: TextField(
+            controller: controller,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 12),
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  // Vereinfachte Geschlecht-Auswahl
+  Widget _buildGenderSelection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Geschlecht',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          height: 48,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: DropdownButton<String>(
+            value: selectedGender,
+            isExpanded: true,
+            underline: const SizedBox(),
+            hint: const Text('Bitte wählen...'),
+            items: genders.map((String gender) {
+              return DropdownMenuItem<String>(
+                value: gender,
+                child: Text(gender),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedGender = value;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    cityController.dispose();
+    streetController.dispose();
+    zipController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.pink[50],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Profil Card mit weißem Hintergrund
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: selectedImage != null
-                          ? FileImage(selectedImage!)
-                          : selectedPokemonImage != null
-                          ? AssetImage(selectedPokemonImage!)
-                          : const AssetImage('assets/images/placeholder.png')
-                                as ImageProvider,
-                      backgroundColor: Colors.grey[300],
-                      child:
-                          selectedImage == null && selectedPokemonImage == null
-                          ? const Icon(
-                              Icons.person,
-                              size: 40,
-                              color: Colors.grey,
-                            )
-                          : null,
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Icon Buttons für Foto-Auswahl
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.camera_alt),
-                          iconSize: 24,
-                          color: Colors.blue,
-                          onPressed: _takePhotoWithCamera,
-                          tooltip: 'Foto aufnehmen',
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.photo_library),
-                          iconSize: 24,
-                          color: Colors.blue,
-                          onPressed: _selectPokemonImage,
-                          tooltip: 'Aus Galerie auswählen',
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          iconSize: 24,
-                          color: Colors.red,
-                          onPressed: selectedPokemonImage != null
-                              ? _removeImage
-                              : null,
-                          tooltip: 'Profilbild entfernen',
-                        ),
-                      ],
-                    ),
-
-                    // Info Text
-                    if (selectedImage == null)
-                      const Padding(
-                        padding: EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          'Kein Profilbild ausgewählt',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                        ),
-                      ),
-                  ],
-                ),
+      appBar: AppBar(
+        title: const Text('Profil'),
+        backgroundColor: Colors.pink[50],
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Profilbild Section
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
               ),
+              child: Column(
+                children: [
+                  // Profilbild
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundImage: selectedImage != null
+                        ? FileImage(selectedImage!)
+                        : selectedPokemonImage != null
+                        ? AssetImage(selectedPokemonImage!)
+                        : const AssetImage('assets/images/placeholder.png')
+                              as ImageProvider,
+                    backgroundColor: Colors.grey[200],
+                    child: selectedImage == null && selectedPokemonImage == null
+                        ? Icon(Icons.person, size: 50, color: Colors.grey[400])
+                        : null,
+                  ),
+                  const SizedBox(height: 16),
 
-              const SizedBox(height: 16),
+                  // Bild-Auswahl Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // _buildImageButton(
+                      //   Icons.library_add,
+                      //   'Kamera',
+                      //   _selectPhotoFromGallery,
+                      // ),
+                      _buildImageButton(
+                        Icons.photo_library,
+                        'Pokémon',
+                        _selectPokemonImage,
+                      ),
+                      _buildImageButton(
+                        Icons.delete,
+                        'Löschen',
+                        (selectedImage != null || selectedPokemonImage != null)
+                            ? _removeImage
+                            : null,
+                        isDelete: true,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
 
-              // Formular Card mit weißem Hintergrund
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Name & Surname',
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Wohnort',
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Straße & Hausnummer',
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Postleitzahl',
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
-                    // Dropdown für Geschlecht
+            // Formular Section
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  _buildSimpleField('Vor- und Nachname', nameController),
+                  const SizedBox(height: 12),
+                  _buildSimpleField('Straße und Hausnummer', streetController),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildSimpleField('Postleitzahl', zipController),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildSimpleField('Wohnort', cityController),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _buildGenderSelection(),
+
+                  // Ausgewähltes Geschlecht anzeigen
+                  if (selectedGender != null) ...[
+                    const SizedBox(height: 12),
                     Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
+                        color: Colors.blue[50],
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: DropdownButton<String>(
-                        value: selectedGender,
-                        isExpanded: true,
-                        underline: const SizedBox(),
-                        hint: const Text(
-                          'Geschlecht auswählen',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        items: genders.map((String gender) {
-                          return DropdownMenuItem<String>(
-                            value: gender,
-                            child: Text(
-                              gender,
-                              style: const TextStyle(fontSize: 16),
+                      child: Row(
+                        children: [
+                          Icon(Icons.check, color: Colors.blue[700]),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Ausgewählt: $selectedGender',
+                            style: TextStyle(
+                              color: Colors.blue[700],
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedGender = value;
-                          });
-                        },
+                          ),
+                        ],
                       ),
                     ),
-
-                    const SizedBox(height: 16),
-                    if (selectedGender != null)
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.blue),
-                        ),
-                        child: Text(
-                          'Ausgewählt: $selectedGender',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
                   ],
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildImageButton(
+    IconData icon,
+    String text,
+    VoidCallback? onPressed, {
+    bool isDelete = false,
+  }) {
+    return Column(
+      children: [
+        IconButton(
+          icon: Icon(icon),
+          iconSize: 28,
+          color: isDelete ? Colors.red : Colors.blue,
+          onPressed: onPressed,
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 12,
+            color: isDelete ? Colors.red : Colors.blue,
+          ),
+        ),
+      ],
     );
   }
 }
