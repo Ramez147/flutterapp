@@ -4,23 +4,21 @@ import 'dart:convert';
 class ChatService {
   static const String apiUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
-  static const String apiKey = 'AIzaSyDmZtYmtHP54wAQWSs9AL2SgaP76nvG5kA';
+  static const String apiKey = 'AIzaSyDNEBD-G0V9MbBWLT2ix39cAomsGZv8_Bs';
 
   Future<String> sendMessage(String message) async {
     try {
       final response = await http.post(
-        // ✅ KORREKT: API Key als Query Parameter
         Uri.parse('$apiUrl?key=$apiKey'),
         headers: {
           'Content-Type': 'application/json',
-          // ❌ ENTFERNEN: 'Authorization' Header nicht bei Gemini!
+          
         },
         body: jsonEncode({
-          // ✅ KORREKT: Gemini JSON Struktur
           'contents': [
             {
               'parts': [
-                {'text': message}, // ✅ Einfach "text" nicht "content"
+                {'text': message}, 
               ],
             },
           ],
@@ -29,7 +27,6 @@ class ChatService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        // ✅ KORREKT: Gemini Response Parsing
         return data['candidates'][0]['content']['parts'][0]['text'];
       } else {
         return 'Fehler: ${response.statusCode} - ${response.body}';
