@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 // import 'package:tucky/Seite/Seite_2/einkaeufediagramm.dart';
-import 'package:tucky/Seite/Seite_2/budget_data.dart';
+import 'package:tucky/Screens/BudgetTracker/budget_data.dart';
 
 class Kreisdarstellung extends StatefulWidget {
   final int Budget;
@@ -17,8 +17,7 @@ class _KreisdarstellungState extends State<Kreisdarstellung> {
   @override
   void initState() {
     super.initState();
-    // _calculateCategoryTotals(Einkaeufe.einkaeufe);
-    // _categoryTotals = Map.from(Einkaeufe.categoryTotals);
+    
   }
 
   Color _getColor(String category) {
@@ -85,62 +84,3 @@ class _KreisdarstellungState extends State<Kreisdarstellung> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Widget build(BuildContext context) {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       borderRadius: BorderRadius.circular(15),
-  //       gradient: LinearGradient(colors: [Colors.blue, Colors.lightBlue]),
-  //     ),
-  //     child: _categoryTotals.isEmpty
-  //         ? Center(
-  //             child: Text(
-  //               'Keine Daten verfügbar',
-  //               textAlign: TextAlign.center,
-  //               style: TextStyle(color: Colors.white, fontSize: 16),
-  //             ),
-  //           )
-  //         : Center(
-  //             child: ValueListenableBuilder<Map<String, double>>(
-  //               valueListenable: Einkaeufe.categoryNotifier,
-  //               builder: (context, categoryTotals, child) {
-  //                 return PieChart(
-  //                   PieChartData(
-  //                     sections: categoryTotals.entries.map((entry) {
-  //                       return PieChartSectionData(
-  //                         value: entry.value, // Der Wert (Preis)
-  //                         color: _getColor(
-  //                           entry.key,
-  //                         ), // Farbe basierend auf Kategorie
-  //                         title:
-  //                             '${entry.key}\n${entry.value.toStringAsFixed(2)}€',
-  //                         radius: 60,
-  //                         titleStyle: TextStyle(
-  //                           fontSize: 14,
-  //                           fontWeight: FontWeight.bold,
-  //                           color: Colors.white,
-  //                         ),
-  //                       );
-  //                     }).toList(),
-  //                   ),
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //   );
-  // }

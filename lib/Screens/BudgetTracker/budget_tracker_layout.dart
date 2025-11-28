@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tucky/Seite/Seite_2/einkaeufediagramm.dart';
-import 'package:tucky/Seite/Seite_2/piechart.dart';
-import 'package:tucky/Drawer/drawer_build.dart';
-import 'package:tucky/Seite/Seite_2/budget_data.dart';
-import 'package:tucky/Seite/Seite_2/rechner.dart';
+import 'package:tucky/Screens/BudgetTracker/list_layout.dart';
+import 'package:tucky/Screens/BudgetTracker/kreis_diagramm_layout.dart';
+import 'package:tucky/Drawer/drawer_build_layout.dart';
+import 'package:tucky/Screens/BudgetTracker/budget_data.dart';
+import 'package:tucky/Screens/BudgetTracker/taschenrechner_layout.dart';
+import 'package:tucky/Screens/ChatBot/chatbot.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({super.key});
@@ -43,6 +44,30 @@ class ToDoState extends State<ToDo> {
     );
   }
 
+  void _showChatbotDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: ClipRRect(
+            // Wichtig: ClipRRect hinzufügen
+            borderRadius: BorderRadius.circular(16.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.85,
+                maxHeight: MediaQuery.of(context).size.height * 0.7,
+              ),
+              child: Chatbot(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +77,13 @@ class ToDoState extends State<ToDo> {
         centerTitle: true,
       ),
       drawer: const MyNavigationDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showChatbotDialog(context);
+        },
+        child: Icon(Icons.chat_bubble_outline),
+        backgroundColor: Color.fromARGB(255, 239, 195, 202),
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

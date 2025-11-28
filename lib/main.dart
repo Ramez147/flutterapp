@@ -2,12 +2,12 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:tucky/Drawer/theme_manager.dart';
+import 'package:tucky/Drawer/EinstellungLayout/theme_manager.dart';
 // import 'package:tucky/Seite/Seite_1/sign_in.dart';
 // import 'package:tucky/Drawer/profil.dart';
 // import 'package:tucky/Seite/Seite_1/first_page.dart';
 // import 'package:tucky/Seite/Seite_1/sign_in.dart';
-import 'package:tucky/Seite/Seite_2/second_page.dart';
+import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
 import 'firebase_options.dart';
 // import 'package:tucky/Drawer/drawer_build.dart';
 
@@ -26,16 +26,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
-  valueListenable: ThemeManager.themeMode,
-  builder: (context, themeMode, child) {
-    return MaterialApp(
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: themeMode,
-      home: const HomePage(),
+      valueListenable: ThemeManager.themeMode,
+      builder: (context, themeMode, child) {
+        return MaterialApp(
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: themeMode,
+          debugShowCheckedModeBanner: false,
+          home: const HomePage(),
+        );
+      },
     );
-  },
-);
   }
 }
 
@@ -45,11 +46,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // Doppelpunkt statt Gleichheitszeichen
-        title: const Text('Startseite'),
-        backgroundColor: Color.fromARGB(255, 239, 195, 202),
-      ),
+      
       // body: StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (context, snapshot) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tucky/Seite/Seite_1/sign_in.dart';
+import 'package:tucky/Screens/Authentifications/sign_in.dart';
 
 class Logout {
   final BuildContext context;

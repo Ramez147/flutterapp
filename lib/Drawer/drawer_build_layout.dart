@@ -1,12 +1,12 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:tucky/lib/Seite/Seite_1/first_page.dart';
-import 'einstellung.dart';
-import 'about_us.dart';
+import 'EinstellungLayout/einstellung_layout.dart';
+import 'about_us_layout.dart';
 import 'logout.dart';
 import 'storageroom.dart';
-import 'package:tucky/Seite/Seite_3/third_page.dart';
-import 'package:tucky/Seite/Seite_2/second_page.dart';
+import 'package:tucky/Screens/ChatBot/chatbot.dart';
+import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
 import 'package:tucky/Drawer/profilFolder/profil.dart';
 import 'package:tucky/Drawer/profil_löschen.dart';
 
@@ -16,12 +16,11 @@ class MyNavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      // Drawer gehört in Scaffold, nicht in AppBar!
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+            decoration: BoxDecoration(color: Color.fromARGB(255, 239, 195, 202)),
             child: Text(
               'Menü',
               style: TextStyle(color: Colors.white, fontSize: 24),

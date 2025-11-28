@@ -106,43 +106,6 @@ class _ProfilState extends State<Profil> {
       },
     );
   }
-
-  Future<void> _selectPhotoFromGallery() async {
-    try {
-      final XFile? photo = await _picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 1800,
-        maxHeight: 1800,
-        imageQuality: 80,
-      );
-
-      if (photo != null) {
-        setState(() {
-          selectedImage = File(photo.path);
-          selectedPokemonImage =
-              null; // Entferne Pokémon-Bild wenn Foto ausgewählt
-        });
-        _showSnackbar('Foto ausgewählt');
-      }
-    } catch (e) {
-      _showSnackbar('Fehler beim Auswählen des Fotos');
-    }
-  }
-
-  Future<void> _takePhotoWithCamera() async {
-    try {
-      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-      if (photo != null) {
-        setState(() {
-          selectedImage = File(photo.path);
-          selectedPokemonImage = null;
-        });
-      }
-    } catch (e) {
-      _showSnackbar('Fehler beim Aufnehmen des Fotos');
-    }
-  }
-
   void _removeImage() {
     setState(() {
       selectedPokemonImage = null;

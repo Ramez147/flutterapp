@@ -1,18 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:tucky/Seite/Seite_2/second_page.dart';
-import 'package:tucky/Seite/Seite_1/first_page.dart';
-// import 'package:tucky/Drawer/drawer_build.dart';
+import 'package:tucky/Screens/Authentifications/sign_in.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Home> createState() => _HomeState();
 }
 
-class _SignInState extends State<SignIn> {
+class _HomeState extends State<Home> {
   bool isChecked = false; // Variable für Checkbox-Status
   final usercontroller = TextEditingController();
   final passwortcontroller = TextEditingController();
@@ -30,43 +27,27 @@ class _SignInState extends State<SignIn> {
     super.dispose();
   }
 
-  Future<void> login() async {
-    if (usercontroller.text.trim().isEmpty ||
-        passwortcontroller.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bitte füllen Sie alle Felder aus!')),
-      );
-      return;
-    }
+  Future<void> createUser() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      // final UserCredential =
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: usercontroller.text.trim(),
         password: passwortcontroller.text.trim(),
       );
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Login erfolgreich!')));
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login fehlgeschlagen: ${e.message}')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Fehler bei der Benutzererstellung: ${e.message}'),
+          ),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // const entfernt, da nicht alle Kinder const sind
-      // appBar: AppBar(
-      //   // Doppelpunkt statt Gleichheitszeichen
-      //   title: const Text('Startseite'),
-      //   backgroundColor: Color.fromARGB(255, 239, 195, 202),
-      // ),
-      // drawer:  MyNavigationDrawer(),
-      // appBar: AppBar(
-      //   title: const Text('Tucky'),
-      //   backgroundColor: Color.fromARGB(255, 239, 195, 202),
-      // ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -147,7 +128,7 @@ class _SignInState extends State<SignIn> {
                     Checkbox(value: isChecked, onChanged: updateCheckbox),
 
                     const Text(
-                      'Sign in page',
+                      'first page',
                       style: TextStyle(color: Colors.black),
                     ),
                   ],
@@ -158,9 +139,8 @@ class _SignInState extends State<SignIn> {
                 width: 40,
                 child: Center(
                   child: ElevatedButton(
-                    // onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>const ToDo()));
                     onPressed: () async {
-                      await login();
+                      await createUser();
                     },
 
                     style: ElevatedButton.styleFrom(
@@ -169,7 +149,7 @@ class _SignInState extends State<SignIn> {
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
                       ),
                     ),
-                    child: Text('Anmelden'),
+                    child: Text('Create User'),
                   ),
                 ),
               ),
@@ -181,20 +161,16 @@ class _SignInState extends State<SignIn> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const Home()),
+                        MaterialPageRoute(builder: (context) => const SignIn()),
                       );
                     },
-
-                    // onPressed: () async {
-                    //   await createUser();
-                    // },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.pink,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
                       ),
                     ),
-                    child: Text('Gehe zu first page'),
+                    child: Text('Gehe zu Anmelden'),
                   ),
                 ),
               ),
