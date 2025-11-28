@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DialogBox extends StatelessWidget {
-  final textController;
-  final preisController;
-  final kategorieController;
+  final TextEditingController  textController;
+  final TextEditingController  preisController;
+  final TextEditingController  kategorieController;
   final VoidCallback onSave;
   final VoidCallback onCancel;
   const DialogBox({

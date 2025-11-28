@@ -4,10 +4,10 @@ class CalculatorDialog extends StatefulWidget {
   const CalculatorDialog({super.key});
 
   @override
-  _CalculatorDialogState createState() => _CalculatorDialogState();
+  CalculatorDialogState createState() => CalculatorDialogState();
 }
 
-class _CalculatorDialogState extends State<CalculatorDialog> {
+class CalculatorDialogState extends State<CalculatorDialog> {
   String _display = '0';
   String _currentInput = '';
   double? _firstNumber;

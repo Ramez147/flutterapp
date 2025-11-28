@@ -161,7 +161,7 @@ class _ChatbotState extends State<Chatbot> {
       margin: const EdgeInsets.only(bottom: 8.0),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        color: message.isUser ? Color.fromARGB(255, 239, 195, 202).withOpacity(0.5) : Colors.blue[50],
+        color: message.isUser ? Color.fromARGB(255, 239, 195, 202) : Colors.blue[50],
         borderRadius: BorderRadius.circular(12.0),
         border: Border.all(
           color: message.isUser ? Color.fromARGB(255, 239, 195, 202) : Colors.blue,

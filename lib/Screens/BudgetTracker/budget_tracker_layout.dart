@@ -81,8 +81,8 @@ class ToDoState extends State<ToDo> {
         onPressed: () {
           _showChatbotDialog(context);
         },
-        child: Icon(Icons.chat_bubble_outline),
         backgroundColor: Color.fromARGB(255, 239, 195, 202),
+        child: Icon(Icons.chat_bubble_outline),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -145,7 +145,7 @@ class ToDoState extends State<ToDo> {
                   if (index == 0) {
                     return Einkaeufe(budget: _budget);
                   } else if (index == 1) {
-                    return Kreisdarstellung(Budget: _budget);
+                    return Kreisdarstellung(budget: _budget);
                   }
                   return null;
                 },

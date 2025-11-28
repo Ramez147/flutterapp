@@ -55,7 +55,6 @@ class FileDownloadService {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Download fehlgeschlagen: $e')));
-      print('Error during file download: $e');
     }
   }
 }

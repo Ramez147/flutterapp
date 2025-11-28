@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 // import 'package:tucky/Seite/Seite_2/einkaeufediagramm.dart';
-import 'package:tucky/Screens/BudgetTracker/budget_data.dart';
+import 'package:tucky/Screens/budgetTracker/budget_data.dart';
 
 class Kreisdarstellung extends StatefulWidget {
-  final int Budget;
-  const Kreisdarstellung({super.key, required this.Budget});
+  final int budget;
+  const Kreisdarstellung({super.key, required this.budget});
   @override
   State<Kreisdarstellung> createState() => _KreisdarstellungState();
 }
 
 class _KreisdarstellungState extends State<Kreisdarstellung> {
   // late Map<String, double> _categoryTotals;
-  late int budget = widget.Budget;
+  late int budget = widget.budget;
 
   @override
   void initState() {

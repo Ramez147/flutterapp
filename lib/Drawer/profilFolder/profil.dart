@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class Profil extends StatefulWidget {
@@ -12,7 +12,7 @@ class Profil extends StatefulWidget {
 class _ProfilState extends State<Profil> {
   String? selectedGender;
   File? selectedImage;
-  final ImagePicker _picker = ImagePicker();
+  // final ImagePicker _picker = ImagePicker();
 
   // TextEditingController für die TextFields
   final TextEditingController nameController = TextEditingController();
