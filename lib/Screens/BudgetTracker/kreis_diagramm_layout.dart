@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 // import 'package:tucky/Seite/Seite_2/einkaeufediagramm.dart';
-import 'package:tucky/Screens/budgetTracker/budget_data.dart';
+import 'package:tucky/Screens/BudgetTracker/budget_data.dart';
 
 class Kreisdarstellung extends StatefulWidget {
   final int budget;

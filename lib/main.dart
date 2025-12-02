@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tucky/Drawer/EinstellungLayout/theme_manager.dart';
+import 'package:tucky/Screens/Authentifications/LogoFadeScreen.dart';
 import 'package:tucky/Screens/Authentifications/auth_gate.dart';
+import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
 import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: themeMode,
           debugShowCheckedModeBanner: false,
-          home: const HomePage(),
+          home: const LogoFadeScreen(),
         );
       },
     );

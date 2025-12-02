@@ -119,11 +119,13 @@ class _EinkaeufeState extends State<Einkaeufe> {
                     IconButton(
                       onPressed: addArtikel,
                       icon: Icon(Icons.add, size: 50, color: Colors.black),
+                      tooltip: 'Artikel hinzufügen',
                     ),
                     SizedBox(height: 10),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(Icons.edit, size: 50, color: Colors.black),
+                      tooltip: 'Artikel bearbeiten',
                     ),
                     SizedBox(height: 10),
                     IconButton(
@@ -135,6 +137,7 @@ class _EinkaeufeState extends State<Einkaeufe> {
                         }
                       },
                       icon: Icon(Icons.delete, size: 50, color: Colors.black),
+                      tooltip: 'Artikel löschen',
                     ),
                     SizedBox(height: 10),
                   ],

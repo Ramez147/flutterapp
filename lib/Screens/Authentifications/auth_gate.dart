@@ -18,7 +18,7 @@ class AuthGate extends StatelessWidget {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ToDo()),
+                MaterialPageRoute(builder: (context) => StartSeite()),
               );
             });
             return Container(); // Leeres Container-Widget zurückgeben

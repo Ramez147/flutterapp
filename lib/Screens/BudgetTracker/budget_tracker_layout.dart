@@ -6,14 +6,14 @@ import 'package:tucky/Screens/BudgetTracker/budget_data.dart';
 import 'package:tucky/Screens/BudgetTracker/taschenrechner_layout.dart';
 import 'package:tucky/Screens/ChatBot/chatbot.dart';
 
-class ToDo extends StatefulWidget {
-  const ToDo({super.key});
+class StartSeite extends StatefulWidget {
+  const StartSeite({super.key});
 
   @override
-  State<ToDo> createState() => ToDoState();
+  State<StartSeite> createState() => StartSeiteState();
 }
 
-class ToDoState extends State<ToDo> {
+class StartSeiteState extends State<StartSeite> {
   final TextEditingController budgetController = TextEditingController();
   int _budget = 0;
 
@@ -72,7 +72,7 @@ class ToDoState extends State<ToDo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Buget_Tracker'),
+        title: const Text('Budget Tracker'),
         backgroundColor: Color.fromARGB(255, 239, 195, 202),
         centerTitle: true,
       ),
@@ -124,19 +124,18 @@ class ToDoState extends State<ToDo> {
                   IconButton(
                     onPressed: () => _showCalculatorDialog(context),
                     icon: Icon(Icons.calculate, size: 40, color: Colors.black),
+                    tooltip: 'Taschenrechner öffnen',
                   ),
                 ],
               ),
 
               SizedBox(height: 15),
-              // Expanded entfernen und shrinkWrap hinzufügen
               GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisExtent:
-                      300, //_calculateHeight(context), // Responsive Höhe
+                  mainAxisExtent: 300,
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
                 ),
