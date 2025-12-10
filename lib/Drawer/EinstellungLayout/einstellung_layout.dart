@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'datei_open.dart';
 import 'datenschutz_layout.dart';
@@ -12,8 +13,52 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _notifications = true;
+  bool _notifications = false;
   String _language = 'Deutsch';
+
+  @override
+  void initState() {
+    super.initState();
+    _setupFirebase();
+  }
+
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  Future<void> _setupFirebase() async {
+    try {
+      await _messaging.requestPermission(alert: true, badge: true, sound: true);
+      final token = await _messaging.getToken();
+      debugPrint('FCM Token: $token');
+    } catch (e) {
+      debugPrint('FCM init fehlgeschlagen: $e');
+    }
+  }
+
+  void _onSwitchChanged(bool value) async {
+  setState(() {
+    _notifications = value;
+  });
+  
+  if (value) {
+    // Benachrichtigungen aktivieren
+    await _setupFirebase();
+  } else {
+    // Benachrichtigungen deaktivieren
+    await _messaging.deleteToken();
+    await _messaging.unsubscribeFromTopic('all');
+  }
+  
+  if (mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(value 
+          ? 'Push-Benachrichtigungen aktiviert'
+          : 'Push-Benachrichtigungen deaktiviert'),
+        backgroundColor: value ? Colors.green : Colors.grey,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +70,14 @@ class _SettingsPageState extends State<SettingsPage> {
           builder: (context, fontSize, child) {
             // Farben basierend auf Theme
             bool isDark = themeMode == ThemeMode.dark;
-            Color backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
+            Color backgroundColor = isDark
+                ? Colors.grey[900]!
+                : Colors.grey[50]!;
             Color cardColor = isDark ? Colors.grey[800]! : Colors.white;
             Color textColor = isDark ? Colors.white : Colors.black;
-            Color subtitleColor = isDark ? Colors.grey[400]! : Colors.grey[600]!;
+            Color subtitleColor = isDark
+                ? Colors.grey[400]!
+                : Colors.grey[600]!;
 
             return Scaffold(
               backgroundColor: backgroundColor,
@@ -40,7 +89,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     color: Colors.white,
                   ),
                 ),
-                backgroundColor: isDark ? Colors.grey[800]! : Color.fromARGB(255, 239, 195, 202),
+                backgroundColor: isDark
+                    ? Colors.grey[800]!
+                    : Color.fromARGB(255, 239, 195, 202),
                 foregroundColor: Colors.white,
                 elevation: isDark ? 0 : 2,
               ),
@@ -63,14 +114,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                         value: _notifications,
-                        onChanged: (value) {
-                          setState(() {
-                            _notifications = value;
-                          });
-                        },
+                        onChanged: _onSwitchChanged, // Direkt die Methode übergeben, nicht setState wrappen
                         activeThumbColor: Color.fromARGB(255, 239, 195, 202),
                       ),
-                      
                     ],
                   ),
 
@@ -297,15 +343,12 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         bool isDark = ThemeManager.isDarkMode;
-        
+
         return AlertDialog(
           backgroundColor: isDark ? Colors.grey[800] : Colors.white,
           title: Text(
             'Sprache auswählen',
-            style: TextStyle(
-              fontSize: fontSize * 1.1,
-              color: textColor,
-            ),
+            style: TextStyle(fontSize: fontSize * 1.1, color: textColor),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,

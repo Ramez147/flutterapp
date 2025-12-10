@@ -24,7 +24,6 @@ class StartSeiteState extends State<StartSeite> {
     });
 
     if (Einkaeufe.categoryNotifier.value.isNotEmpty) {
-      // Erstelle eine Kopie mit aktualisierten Werten basierend auf neuem Budget
       final currentData = Map<String, double>.from(
         Einkaeufe.categoryNotifier.value,
       );

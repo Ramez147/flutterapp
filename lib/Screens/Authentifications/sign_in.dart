@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tucky/Screens/Authentifications/sign_up.dart';
@@ -13,12 +15,6 @@ class _SignInState extends State<SignIn> {
   bool isChecked = false;
   final usercontroller = TextEditingController();
   final passwortcontroller = TextEditingController();
-
-  void updateCheckbox(bool? value) {
-    setState(() {
-      isChecked = value ?? false;
-    });
-  }
 
   @override
   void dispose() {
@@ -76,20 +72,16 @@ class _SignInState extends State<SignIn> {
               ],
             ),
             child: Row(
-              // Linke Seite: Bild
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // WICHTIG: In der Mitte vertikal
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Linke Seite: Bild
                 Expanded(
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
-                      // Zentriere das Bild im Container
                       child: Container(
-                        height: 200, // Feste Höhe oder responsive
-                        width: 250, // Feste Breite oder responsive
+                        height: 200,
+                        width: 250,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(15),
@@ -113,14 +105,11 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
 
-                // Vertikale Trennlinie
                 Container(
                   width: 1,
                   height: MediaQuery.of(context).size.height * 0.6,
                   color: Colors.grey.withOpacity(0.3),
                 ),
-
-                // Rechte Seite: Formular
                 Expanded(
                   flex: 1,
                   child: Padding(
@@ -140,7 +129,6 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 30),
 
-                        // Benutzername Feld
                         TextField(
                           decoration: InputDecoration(
                             labelText: 'Benutzername/E-Mail',
@@ -160,7 +148,10 @@ class _SignInState extends State<SignIn> {
                                 width: 2,
                               ),
                             ),
-                            prefixIcon: Icon(Icons.person, color: Color.fromRGBO(10, 21, 58, 1)),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Color.fromRGBO(10, 21, 58, 1),
+                            ),
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding: EdgeInsets.symmetric(
@@ -173,7 +164,6 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Passwort Feld
                         TextField(
                           decoration: InputDecoration(
                             labelText: 'Passwort',
@@ -182,7 +172,9 @@ class _SignInState extends State<SignIn> {
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
                               ),
-                              borderSide: BorderSide(color: Color.fromRGBO(10, 21, 58, 1)),
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(10, 21, 58, 1),
+                              ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -193,7 +185,10 @@ class _SignInState extends State<SignIn> {
                                 width: 2,
                               ),
                             ),
-                            prefixIcon: Icon(Icons.lock, color: Color.fromRGBO(10, 21, 58, 1)),
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: Color.fromRGBO(10, 21, 58, 1),
+                            ),
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding: EdgeInsets.symmetric(
@@ -229,14 +224,12 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Registrieren Link
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const Home(), // Oder SignUpScreen()
+                                builder: (context) => const SignUp(),
                               ),
                             );
                           },

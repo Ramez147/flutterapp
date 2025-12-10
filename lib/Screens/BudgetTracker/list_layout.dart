@@ -46,7 +46,7 @@ class _EinkaeufeState extends State<Einkaeufe> {
             kategorien: _kategorieController.text,
           ),
           onDelete:
-              () {}, // Leerer Callback, wird in ListView.builder überschrieben
+              () {},
         ),
       );
     });

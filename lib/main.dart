@@ -1,12 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tucky/Drawer/EinstellungLayout/theme_manager.dart';
-import 'package:tucky/Screens/Authentifications/LogoFadeScreen.dart';
+import 'package:tucky/Screens/Authentifications/logo_fade_screen.dart';
 import 'package:tucky/Screens/Authentifications/auth_gate.dart';
-import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
+// import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
 import 'firebase_options.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://kwsteetnurtvvdhaxkwt.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3c3RlZXRudXJ0dnZkaGF4a3d0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1OTUxODIsImV4cCI6MjA3OTE3MTE4Mn0.4EnhjoEizAj6UEVBh2XVKOnVVyCvUDiY_8r4Xdv4DcM',
+  );
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());

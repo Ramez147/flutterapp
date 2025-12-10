@@ -56,16 +56,7 @@ class MyNavigationDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('Über uns'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const TeamworkDialog()),
-              );
-            },
-          ),
+         
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text('Profil'),
@@ -77,7 +68,7 @@ class MyNavigationDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.person),
+            leading: const Icon(Icons.storage_outlined),
             title: const Text('storage room'),
             onTap: () {
               Navigator.push(
@@ -86,8 +77,18 @@ class MyNavigationDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
+           ListTile(
             leading: const Icon(Icons.info),
+            title: const Text('Über uns'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TeamworkDialog()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
             title: const Text('abmelden'),
             onTap: () {
               Logout(context).logout();

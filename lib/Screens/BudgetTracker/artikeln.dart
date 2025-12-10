@@ -25,7 +25,6 @@ class ArtikelWidget extends StatelessWidget {
       subtitle: Text('${artikel.preis}€ , ${artikel.kategorien}'),
       leading: Icon(Icons.shopping_cart),
       trailing: IconButton(
-        // DELETE-BUTTON HINZUFÜGEN
         icon: Icon(Icons.delete, color: Colors.red),
         onPressed: onDelete,
       ),

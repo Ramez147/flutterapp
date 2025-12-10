@@ -1,15 +1,17 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tucky/Screens/Authentifications/sign_in.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _HomeState extends State<Home> {
+class _SignUpState extends State<SignUp> {
   final usercontroller = TextEditingController();
   final passwortcontroller = TextEditingController();
 
