@@ -1,354 +1,39 @@
-import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+class Profil {
+  final int id;
+   final String username;
+   final String adresse;
+   final int plz;
+   final String ort;
+   final String geschlecht;
 
-class Profil extends StatefulWidget {
-  const Profil({super.key});
+  Profil({
+    required this.id,
+    required this.username,
+    required this.adresse,
+    required this.plz,
+    required this.ort,
+    required this.geschlecht,
+  });
 
-  @override
-  State<Profil> createState() => _ProfilState();
-}
-
-class _ProfilState extends State<Profil> {
-  String? selectedGender;
-  File? selectedImage;
-  // final ImagePicker _picker = ImagePicker();
-
-  // TextEditingController für die TextFields
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController streetController = TextEditingController();
-  final TextEditingController zipController = TextEditingController();
-
-  // Vereinfachte Geschlechter-Liste
-  final List<String> genders = [
-    'Männlich',
-    'Weiblich',
-    'Divers',
-    'Keine Angabe',
-  ];
-
-  String? selectedPokemonImage;
-
-  final List<String> pokemonImages = [
-    'assets/images/pokemon/butterfly.webp',
-    'assets/images/pokemon/charizard.webp',
-    'assets/images/pokemon/charmander.webp',
-    'assets/images/pokemon/eevee.webp',
-    'assets/images/pokemon/endynalos.webp',
-    'assets/images/pokemon/ghost.webp',
-    'assets/images/pokemon/lugia.webp',
-    'assets/images/pokemon/myu.webp',
-    'assets/images/pokemon/pikatchu.webp',
-    'assets/images/pokemon/poketball.webp',
-    'assets/images/pokemon/profile_picture.webp',
-    'assets/images/pokemon/sadafa.webp',
-    'assets/images/pokemon/sandak.webp',
-  ];
-
-  void _selectPokemonImage() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.7,
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Text(
-                'Pokémon auswählen',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.pink[700],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                  ),
-                  itemCount: pokemonImages.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedPokemonImage = pokemonImages[index];
-                          selectedImage = null;
-                        });
-                        Navigator.of(context).pop();
-                        _showSnackbar('Pokémon ausgewählt');
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: selectedPokemonImage == pokemonImages[index]
-                                ? Colors.blue
-                                : Colors.grey,
-                          ),
-                        ),
-                        child: Image.asset(
-                          pokemonImages[index],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-  void _removeImage() {
-    setState(() {
-      selectedPokemonImage = null;
-      selectedImage = null;
-    });
-    _showSnackbar('Profilbild entfernt');
-  }
-
-  void _showSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: message.contains('Fehler') ? Colors.red : Colors.green,
-      ),
+  factory Profil.fromMap(Map<String, dynamic> map) {
+    return Profil(
+      id: map['id']?.toInt() ?? 0,
+      username: map['username'] ?? '',
+      adresse: map['adresse'] ?? '',
+      plz: map['plz']?.toInt() ?? 0,
+      ort: map['ort'] ?? '',
+      geschlecht: map['geschlecht'] ?? '',
     );
   }
 
-  // Vereinfachte Hilfsmethode für Text-Felder
-  Widget _buildSimpleField(String label, TextEditingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          height: 48,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(horizontal: 12),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Vereinfachte Geschlecht-Auswahl
-  Widget _buildGenderSelection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Geschlecht',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          height: 48,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: DropdownButton<String>(
-            value: selectedGender,
-            isExpanded: true,
-            underline: const SizedBox(),
-            hint: const Text('Bitte wählen...'),
-            items: genders.map((String gender) {
-              return DropdownMenuItem<String>(
-                value: gender,
-                child: Text(gender),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    cityController.dispose();
-    streetController.dispose();
-    zipController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.pink[50],
-      appBar: AppBar(
-        title: const Text('Profil'),
-        backgroundColor: Colors.pink[50],
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Profilbild Section
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  // Profilbild
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundImage: selectedImage != null
-                        ? FileImage(selectedImage!)
-                        : selectedPokemonImage != null
-                        ? AssetImage(selectedPokemonImage!)
-                        : const AssetImage('assets/images/placeholder.png')
-                              as ImageProvider,
-                    backgroundColor: Colors.grey[200],
-                    child: selectedImage == null && selectedPokemonImage == null
-                        ? Icon(Icons.person, size: 50, color: Colors.grey[400])
-                        : null,
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Bild-Auswahl Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // _buildImageButton(
-                      //   Icons.library_add,
-                      //   'Kamera',
-                      //   _selectPhotoFromGallery,
-                      // ),
-                      _buildImageButton(
-                        Icons.photo_library,
-                        'Pokémon',
-                        _selectPokemonImage,
-                      ),
-                      _buildImageButton(
-                        Icons.delete,
-                        'Löschen',
-                        (selectedImage != null || selectedPokemonImage != null)
-                            ? _removeImage
-                            : null,
-                        isDelete: true,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Formular Section
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  _buildSimpleField('Vor- und Nachname', nameController),
-                  const SizedBox(height: 12),
-                  _buildSimpleField('Straße und Hausnummer', streetController),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildSimpleField('Postleitzahl', zipController),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildSimpleField('Wohnort', cityController),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  _buildGenderSelection(),
-
-                  // Ausgewähltes Geschlecht anzeigen
-                  if (selectedGender != null) ...[
-                    const SizedBox(height: 12),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.blue[50],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.check, color: Colors.blue[700]),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Ausgewählt: $selectedGender',
-                            style: TextStyle(
-                              color: Colors.blue[700],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildImageButton(
-    IconData icon,
-    String text,
-    VoidCallback? onPressed, {
-    bool isDelete = false,
-  }) {
-    return Column(
-      children: [
-        IconButton(
-          icon: Icon(icon),
-          iconSize: 28,
-          color: isDelete ? Colors.red : Colors.blue,
-          onPressed: onPressed,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 12,
-            color: isDelete ? Colors.red : Colors.blue,
-          ),
-        ),
-      ],
-    );
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'username': username,
+      'adresse': adresse,
+      'plz': plz,
+      'ort': ort,
+      'geschlecht': geschlecht,
+    };
   }
 }

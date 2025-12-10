@@ -122,11 +122,11 @@ class _EinkaeufeState extends State<Einkaeufe> {
                       tooltip: 'Artikel hinzufügen',
                     ),
                     SizedBox(height: 10),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.edit, size: 50, color: Colors.black),
-                      tooltip: 'Artikel bearbeiten',
-                    ),
+                    // IconButton(
+                    //   onPressed: () {},
+                    //   icon: Icon(Icons.edit, size: 50, color: Colors.black),
+                    //   tooltip: 'Artikel bearbeiten',
+                    // ),
                     SizedBox(height: 10),
                     IconButton(
                       onPressed: () {

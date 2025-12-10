@@ -2,8 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tucky/Drawer/EinstellungLayout/theme_manager.dart';
 import 'package:tucky/Screens/Authentifications/logo_fade_screen.dart';
-import 'package:tucky/Screens/Authentifications/auth_gate.dart';
-// import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
+import 'package:tucky/Screens/new_budget/budget_display.dart';
 import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
@@ -33,20 +32,11 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: themeMode,
           debugShowCheckedModeBanner: false,
-          home: const LogoFadeScreen(),
+          home: const TwoCardsScreen(),
         );
       },
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: AuthGate(),
-    );
-  }
-}

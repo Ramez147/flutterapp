@@ -7,7 +7,7 @@ import 'logout.dart';
 import 'storageroom.dart';
 import 'package:tucky/Screens/ChatBot/chatbot.dart';
 import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
-import 'package:tucky/Drawer/profilFolder/profil.dart';
+import 'package:tucky/Drawer/profilFolder/profil_layout.dart';
 import 'package:tucky/Drawer/profil_delete.dart';
 
 class MyNavigationDrawer extends StatelessWidget {
