@@ -52,6 +52,7 @@ dependencies:
   supabase_flutter: ^2.10.3
   flutter_scalify: ^2.0.2
   firebase_messaging: ^16.0.4
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:

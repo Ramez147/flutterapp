@@ -201,13 +201,17 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
     );
   }
 
-  void updateBudget(int newBudget) async {
+  void saveBudget(double newBudget) async {
+      print("updateBudget START");
     MonthDatenbank monthDatabase = MonthDatenbank();
     try {
+      print("calling getMonthsById...");
       final months = await monthDatabase.getMonthsById(picked.month);
+      print("months loaded: $months");
       if (months != null) {
+        print("calling updateBudget DB...");
         await monthDatabase.updateBudget(months, newBudget.toDouble()); // updateModule -> updateBudget
-        
+        print("DB update done");
       }
     } catch (e) {
       print('Error updating budget: $e');
@@ -298,9 +302,10 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                         keyboardType: TextInputType.number,
                         controller: budgetController,
                         onSubmitted: (value) {
-                          final int? newBudget = int.tryParse(value);
+                          final double? newBudget = double.tryParse(value);
                           if (newBudget != null) {
-                            updateBudget(newBudget);
+                            saveBudget(newBudget);
+                            transactionDatabase.getChartData(picked.month);
                             
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -372,9 +377,7 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                                       final transaction = transactions[index];
                                       return ListTile(
                                         title: Text(transaction.amount.toString()),
-                                        subtitle: Text(
-                                          transaction.type  ,
-                                        ),
+                                        subtitle: Text(transaction.type),
                                         leading: CircleAvatar(
                                           backgroundColor: Colors.blue.shade100,
                                           child: Icon(
@@ -382,15 +385,23 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                                             color: Colors.blue.shade700,
                                           ),
                                         ),
-                                        trailing: const Icon(
-                                          Icons.chevron_right,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
+                                        trailing: IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
                                           ),
+                                          onPressed: () {
+                                            transactionDatabase.deleteTransaction(transaction);
+                                            if (mounted) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text('Element gelöscht'),
+                                                  backgroundColor: Colors.orange,
+                                                ),
+                                              );
+                                            }
+                                          },
                                         ),
-                                        onTap: () {},
                                       );
                                     },
                                   );

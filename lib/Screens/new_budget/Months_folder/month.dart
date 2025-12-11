@@ -1,13 +1,13 @@
 class Months {
   
   final int? id;
-  final DateTime date;
+  final DateTime? date;
   final double monthlyBudget;
   final String? notes;
 
   Months({
     this.id,
-    required this.date,
+     this.date,
     required this.monthlyBudget,
     this.notes,
   });
@@ -16,7 +16,9 @@ class Months {
   factory Months.fromMap(Map<String, dynamic> map) {
     return Months(
       id: map['id'] as int?,
-      date: DateTime.parse(map['date'] as String),
+      date: map['date'] != null
+          ? DateTime.parse(map['date'] as String)
+          : null,
       monthlyBudget: (map['monthlyBudget']) is int
           ? (map['monthlyBudget'] as int).toDouble()
           : map['monthlyBudget'] as double,
@@ -28,7 +30,7 @@ class Months {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'date': date.toIso8601String(),
+      'date': date?.toIso8601String(),
       'monthlyBudget': monthlyBudget,
       'notes': notes,
     };
