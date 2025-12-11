@@ -1,6 +1,6 @@
 class Months {
   
-  final String? monthId;
+  final int? monthId;
   final DateTime date;
   final double monthlyBudget;
   final String? notes;
@@ -15,7 +15,7 @@ class Months {
   // Von Map (statt JSON)
   factory Months.fromMap(Map<String, dynamic> map) {
     return Months(
-      monthId: map['monthId'] as String?,
+      monthId: map['monthId'] as int?,
       date: DateTime.parse(map['date'] as String),
       monthlyBudget: (map['monthly_budget']) is int
           ? (map['monthly_budget'] as int).toDouble()

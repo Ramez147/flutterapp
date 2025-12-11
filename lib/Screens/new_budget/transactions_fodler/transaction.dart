@@ -1,6 +1,6 @@
 class Transaction {
-  final String? id;
-  final String monthId;
+  final int? id;
+  final int monthId;
   final double amount;
   final String type;
   final String category;
@@ -18,8 +18,8 @@ class Transaction {
   // Von Map (statt JSON)
   factory Transaction.fromMap(Map<String, dynamic> map) {
     return Transaction(
-      id: map['id'] as String?,
-      monthId: map['monthId'] as String,
+      id: map['id'] as int?,
+      monthId: map['monthId'] as int,
       amount: (map['amount']) is int
           ? (map['amount'] as int).toDouble()
           : map['amount'] as double,
@@ -32,8 +32,8 @@ class Transaction {
   // Für Insert (ohne ID und Timestamps)
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'monthId': monthId, // Konsistent mit fromMap
+      
+      'monthId': monthId, 
       'amount': amount,
       'type': type,
       'category': category,

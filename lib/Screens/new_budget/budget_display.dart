@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tucky/Screens/new_budget/chart.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transaction.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transactions_datenbank.dart';
+
 class TwoCardsScreen extends StatefulWidget {
   const TwoCardsScreen({super.key});
 
@@ -11,27 +12,22 @@ class TwoCardsScreen extends StatefulWidget {
 
 class _TwoCardsScreenState extends State<TwoCardsScreen> {
   // Beispiel-Daten für die Liste
-  final List<ListItem> items = [
-    ListItem(id: 1, title: 'Element 1', subtitle: 'Beschreibung 1'),
-    ListItem(id: 2, title: 'Element 2', subtitle: 'Beschreibung 2'),
-    ListItem(id: 3, title: 'Element 3', subtitle: 'Beschreibung 3'),
-    ListItem(id: 4, title: 'Element 4', subtitle: 'Beschreibung 4'),
-    ListItem(id: 5, title: 'Element 5', subtitle: 'Beschreibung 5'),
-    ListItem(id: 6, title: 'Element 6', subtitle: 'Beschreibung 6'),
-    ListItem(id: 7, title: 'Element 7', subtitle: 'Beschreibung 7'),
-    ListItem(id: 8, title: 'Element 8', subtitle: 'Beschreibung 8'),
-  ];
 
-  ListItem? selectedItem;
   DateTime picked = DateTime.now();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  
+
   final TransactionDatenbank transactionDatabase = TransactionDatenbank();
-  
+
+  Stream<List<Transaction>> get _TransactionsStream {
+    return transactionDatabase
+        .getTransactions(picked.month)
+        .asBroadcastStream();
+  }
+
   void addNewTransaction() {
     _amountController.clear();
     _typeController.clear();
@@ -119,17 +115,20 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                         type: _typeController.text,
                         category: _categoryController.text,
                         description: _descriptionController.text,
-                        monthId: picked.month.toString(),
-                       
+                        monthId: picked.month,
                       );
 
-                      await transactionDatabase.createTransaction(neutransaction);
+                      await transactionDatabase.createTransaction(
+                        neutransaction,
+                      );
 
                       if (mounted) {
                         Navigator.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Transaktion erfolgreich hinzugefügt'),
+                            content: Text(
+                              'Transaktion erfolgreich hinzugefügt',
+                            ),
                             backgroundColor: Colors.green,
                           ),
                         );
@@ -292,12 +291,12 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                               onPressed: () {
                                 // Hier: Neues Element hinzufügen
                                 addNewTransaction();
-                                if (mounted){
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Element hinzugefügt'),
-                                  ),
-                                );
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Element hinzugefügt'),
+                                    ),
+                                  );
                                 }
                               },
                               icon: const Icon(Icons.add),
@@ -309,28 +308,52 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                             const SizedBox(height: 12),
                             // ListView
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: items.length,
-                                itemBuilder: (context, index) {
-                                  final item = items[index];
-                                  return ListTile(
-                                    title: Text(item.title),
-                                    subtitle: Text(item.subtitle),
-                                    leading: CircleAvatar(
-                                      backgroundColor: Colors.blue.shade100,
-                                      child: Text('${item.id}'),
-                                    ),
-                                    trailing: const Icon(Icons.chevron_right),
-                                    tileColor: selectedItem?.id == item.id
-                                        ? Colors.blue.shade50
-                                        : null,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        selectedItem = item;
-                                      });
+                              child: StreamBuilder<List<Transaction>>(
+                                stream: _TransactionsStream,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
+                                  }
+
+                                  if (snapshot.hasError) {
+                                    return Text('Fehler: ${snapshot.error}');
+                                  }
+
+                                  final transactions = snapshot.data!;
+
+                                  if (transactions.isEmpty) {
+                                    return const Text(
+                                      'Keine Transaktionen gefunden.',
+                                    );
+                                  }
+
+                                  return ListView.builder(
+                                    itemCount: transactions.length,
+                                    itemBuilder: (context, index) {
+                                      final transaction = transactions[index];
+                                      return ListTile(
+                                        title: Text(transaction.amount.toString()),
+                                        subtitle: Text(
+                                          transaction.type  ,
+                                        ),
+                                        leading: CircleAvatar(
+                                          backgroundColor: Colors.blue.shade100,
+                                          child: Icon(
+                                            Icons.monetization_on,
+                                            color: Colors.blue.shade700,
+                                          ),
+                                        ),
+                                        trailing: const Icon(
+                                          Icons.chevron_right,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        onTap: () {},
+                                      );
                                     },
                                   );
                                 },
@@ -357,10 +380,3 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
 }
 
 // Datenmodell für Listenelemente
-class ListItem {
-  final int id;
-  final String title;
-  final String subtitle;
-
-  ListItem({required this.id, required this.title, required this.subtitle});
-}

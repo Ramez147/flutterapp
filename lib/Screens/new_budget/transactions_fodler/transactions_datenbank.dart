@@ -51,4 +51,19 @@ class TransactionDatenbank {
       rethrow;
     }
   }
+
+    Stream<List<Transaction>> getTransactions(int monthId) {
+    return Supabase.instance.client
+        .from('transaction')
+        .stream(primaryKey: ['id'])
+        .eq('monthId', monthId)
+        .map((data) {
+          return data
+              .whereType<Map<String, dynamic>>()
+              .map((m) => Transaction.fromMap(Map<String, dynamic>.from(m)))
+              .toList();
+        });
+  }
+
+
 }
