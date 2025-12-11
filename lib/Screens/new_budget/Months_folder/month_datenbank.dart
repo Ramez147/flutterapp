@@ -1,14 +1,14 @@
 import 'package:tucky/Screens/new_budget/Months_folder/month.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DaysDatenbank {
+class MonthDatenbank {
   final SupabaseClient _client = Supabase.instance.client;
   
   Future<void> createMonths(Months newMonths) async {
     try {
       final map = newMonths.toMap();
 
-      await _client.from('months').insert(map);
+      await _client.from('Month').insert(map);
       await Future.delayed(Duration(milliseconds: 100));
 
     } catch (e) {
@@ -18,7 +18,7 @@ class DaysDatenbank {
 
   Stream<List<Months>> get stream {
     return _client
-        .from('months')
+        .from('Month')
         .stream(primaryKey: ['monthId'])
         .map((data) {
           return data
@@ -42,12 +42,44 @@ class DaysDatenbank {
 
   Future<void> deleteMonths(Months months) async {
     try {
-      if (months.monthId == null) {
+      if (months.id == null) {
         throw ArgumentError('Months ID cannot be null');
       }
-      await _client.from('months').delete().eq('monthId', months.monthId!);
+      await _client.from('Month').delete().eq('id', months.id!);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<Months?> getMonthsById(int id) async {
+    try {
+      final response = await _client
+          .from('Month')
+          .select()
+          .eq('id', id)
+          .single();
+      return Months.fromMap(Map<String, dynamic>.from(response));
+    } catch (e) {
+      return null;
+    }
+  }
+
+   Future<Months?> updateBudget(Months months, double newMonthlyBudget) async {
+    if (months.id == null) {
+      throw ArgumentError('Module ID cannot be null for update');
+    }
+    try {
+      final response = await _client
+          .from('Month')
+          .update({'monthlyBudget': newMonthlyBudget})
+          .eq('id', months.id!)
+          .select()
+          .single();
+      return Months.fromMap(Map<String, dynamic>.from(response));
+    } catch (e) {
+      // ignore: avoid_print
+      print('updateModule error: $e');
+      return null;
     }
   }
 }

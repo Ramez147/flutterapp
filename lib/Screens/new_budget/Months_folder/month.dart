@@ -1,12 +1,12 @@
 class Months {
   
-  final int? monthId;
+  final int? id;
   final DateTime date;
   final double monthlyBudget;
   final String? notes;
 
   Months({
-    this.monthId,
+    this.id,
     required this.date,
     required this.monthlyBudget,
     this.notes,
@@ -15,11 +15,11 @@ class Months {
   // Von Map (statt JSON)
   factory Months.fromMap(Map<String, dynamic> map) {
     return Months(
-      monthId: map['monthId'] as int?,
+      id: map['id'] as int?,
       date: DateTime.parse(map['date'] as String),
-      monthlyBudget: (map['monthly_budget']) is int
-          ? (map['monthly_budget'] as int).toDouble()
-          : map['monthly_budget'] as double,
+      monthlyBudget: (map['monthlyBudget']) is int
+          ? (map['monthlyBudget'] as int).toDouble()
+          : map['monthlyBudget'] as double,
       notes: map['notes'] as String?,
     );
   }
@@ -27,9 +27,9 @@ class Months {
   // Für Insert (ohne ID und Timestamps)
   Map<String, dynamic> toMap() {
     return {
-      'monthId': monthId,
+      'id': id,
       'date': date.toIso8601String(),
-      'monthly_budget': monthlyBudget,
+      'monthlyBudget': monthlyBudget,
       'notes': notes,
     };
   }

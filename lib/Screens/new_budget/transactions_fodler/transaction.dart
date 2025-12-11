@@ -22,9 +22,9 @@ class Transaction {
       monthId: map['monthId'] as int,
       amount: (map['amount']) is int
           ? (map['amount'] as int).toDouble()
-          : map['amount'] as double,
-      type: map['type'] as String,
-      category: map['category'] as String,
+          : (map['amount'] as num).toDouble(),
+      type: (map['type'] as String?) ?? '',
+      category: (map['category'] as String?) ?? '',
       description: map['description'] as String?,
     );
   }

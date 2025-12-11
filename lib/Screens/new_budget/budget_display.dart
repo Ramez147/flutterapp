@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tucky/Screens/new_budget/chart.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transaction.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transactions_datenbank.dart';
-
+import 'package:tucky/Screens/new_budget/Months_folder/month_datenbank.dart';
 class TwoCardsScreen extends StatefulWidget {
   const TwoCardsScreen({super.key});
 
@@ -11,8 +11,7 @@ class TwoCardsScreen extends StatefulWidget {
 }
 
 class _TwoCardsScreenState extends State<TwoCardsScreen> {
-  // Beispiel-Daten für die Liste
-
+  
   DateTime picked = DateTime.now();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
@@ -202,6 +201,23 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
     );
   }
 
+  void updateBudget(int newBudget) async {
+    MonthDatenbank monthDatabase = MonthDatenbank();
+    try {
+      final months = await monthDatabase.getMonthsById(picked.month);
+      if (months != null) {
+        await monthDatabase.updateBudget(months, newBudget.toDouble()); // updateModule -> updateBudget
+        
+      }
+    } catch (e) {
+      print('Error updating budget: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Fehler beim Aktualisieren: $e')),
+      );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -281,6 +297,28 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                         ),
                         keyboardType: TextInputType.number,
                         controller: budgetController,
+                        onSubmitted: (value) {
+                          final int? newBudget = int.tryParse(value);
+                          if (newBudget != null) {
+                            updateBudget(newBudget);
+                            
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Budget aktualisiert'),
+                                ),
+                              );
+                            }
+                          } else {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Ungültiger Budgetwert'),
+                                ),
+                              );
+                            }
+                          }
+                        },
                       ),
                       const SizedBox(height: 16),
                       Expanded(
@@ -371,7 +409,12 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
             const SizedBox(width: 16),
 
             // Rechte Card
-            Expanded(flex: 1, child: ChartDiagram()),
+            Expanded(
+              flex: 1,
+              child: ChartDiagram(
+                monthId: picked.month,
+              ),
+            ),
           ],
         ),
       ),
@@ -379,4 +422,4 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
   }
 }
 
-// Datenmodell für Listenelemente
+
