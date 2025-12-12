@@ -1,12 +1,12 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tucky/Screens/new_budget/budget_display.dart';
 // import 'package:tucky/lib/Seite/Seite_1/first_page.dart';
 import 'EinstellungLayout/einstellung_layout.dart';
 import 'about_us_layout.dart';
 import 'logout.dart';
 import 'storageroom.dart';
 import 'package:tucky/Screens/ChatBot/chatbot.dart';
-import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
 import 'package:tucky/Drawer/profilFolder/profil_layout.dart';
 import 'package:tucky/Drawer/profil_delete.dart';
 
@@ -32,7 +32,7 @@ class MyNavigationDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => StartSeite()),
+                MaterialPageRoute(builder: (context) => TwoCardsScreen()),
               );
             },
           ),

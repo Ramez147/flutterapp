@@ -46,16 +46,13 @@ class MonthDatenbank {
 
   Future<Months?> getMonthsById(int id) async {
     try {
-      print("getMonthsById: requesting id $id");
       final response = await _client
           .from('Month')
           .select()
           .eq('id', id)
           .single();
-          print("getMonthsById: response = $response");
       return Months.fromMap(Map<String, dynamic>.from(response));
     } catch (e) {
-      print("getMonthsById ERROR: $e");
       return null;
     }
   }
@@ -71,7 +68,6 @@ class MonthDatenbank {
           .eq('id', months.id!)
           .select()
           .single();
-      print("Supabase response: $response");
 
       return Months.fromMap(Map<String, dynamic>.from(response));
     } catch (e) {

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tucky/Screens/Authentifications/sign_in.dart';
-import 'package:tucky/Screens/BudgetTracker/budget_tracker_layout.dart';
+import 'package:tucky/Screens/new_budget/budget_display.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -18,7 +18,7 @@ class AuthGate extends StatelessWidget {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => StartSeite()),
+                MaterialPageRoute(builder: (context) => const TwoCardsScreen()),
               );
             });
             return Container(); // Leeres Container-Widget zurückgeben

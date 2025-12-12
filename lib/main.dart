@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tucky/Drawer/EinstellungLayout/theme_manager.dart';
 import 'package:tucky/Screens/Authentifications/logo_fade_screen.dart';
-import 'package:tucky/Screens/new_budget/budget_display.dart';
 import 'package:tucky/Screens/new_budget/list_provider.dart';
 import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: themeMode,
           debugShowCheckedModeBanner: false,
-          home: const TwoCardsScreen(),
+          home: const LogoFadeScreen(),
         );
       },
     );

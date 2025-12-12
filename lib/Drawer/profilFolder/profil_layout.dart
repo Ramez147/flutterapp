@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:tucky/Drawer/profilFolder/profil_datenbank.dart';
-import 'package:tucky/Drawer/profilFolder/profil.dart';
 
 class Profil extends StatefulWidget {
   const Profil({super.key});
@@ -68,7 +67,7 @@ class _ProfilState extends State<Profil> {
         });
       }
     } catch (e) {
-      print('Fehler beim Laden des Profils: $e');
+      _showSnackbar('Fehler beim Laden des Profils: $e');
     }
   }
 
