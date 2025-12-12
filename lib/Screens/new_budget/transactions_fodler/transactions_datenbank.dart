@@ -190,5 +190,46 @@ Stream<List<Transaction>> getTransactionsByMonthID(int monthId) =>
     }).toList();
   }
   
+  // Neue Methode: Chart-Daten als Text für Chatbot formatieren
+  Future<String> getChartDataAsText(int monthId) async {
+    try {
+      final response = await _client
+          .from('transaction')
+          .select()
+          .eq('monthId', monthId);
+      
+      final transactions = (response as List)
+          .map((e) => Transaction.fromMap(e))
+          .toList();
+      
+      final monthlyBudget = await _fetchMonthlyBudget(monthId);
+      
+      final totalSpent = transactions.fold(
+        0.0,
+        (sum, t) => sum + t.amount,
+      );
+      
+      final buffer = StringBuffer();
+      buffer.writeln('📊 Finanzübersicht Monat $monthId');
+      buffer.writeln('━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      buffer.writeln('💰 Budget: ${monthlyBudget.toStringAsFixed(2)}€');
+      buffer.writeln('💸 Ausgegeben: ${totalSpent.toStringAsFixed(2)}€');
+      buffer.writeln('📈 Verbleibend: ${(monthlyBudget - totalSpent).toStringAsFixed(2)}€');
+      buffer.writeln('\n📋 Transaktionen nach Kategorie:');
+      
+      final categoryMap = <String, double>{};
+      for (final t in transactions) {
+        categoryMap[t.category] = (categoryMap[t.category] ?? 0) + t.amount;
+      }
+      
+      categoryMap.forEach((category, amount) {
+        buffer.writeln('  • $category: ${amount.toStringAsFixed(2)}€');
+      });
+      
+      return buffer.toString();
+    } catch (e) {
+      return 'Fehler beim Laden der Daten: $e';
+    }
+  }
 }
 

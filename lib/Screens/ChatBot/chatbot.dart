@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:tucky/Screens/ChatBot/api_response.dart';
 
 class Chatbot extends StatefulWidget {
-  const Chatbot({super.key});
+  final String? initialMessage;
+
+  const Chatbot({super.key, this.initialMessage});
 
   @override
   State<Chatbot> createState() => _ChatbotState();
@@ -77,6 +79,17 @@ class _ChatbotState extends State<Chatbot> {
         );
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialMessage != null && widget.initialMessage!.isNotEmpty) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        _messageController.text = widget.initialMessage!;
+        _sendMessage();
+      });
+    }
   }
 
   @override

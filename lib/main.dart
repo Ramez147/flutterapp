@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tucky/Drawer/EinstellungLayout/theme_manager.dart';
 import 'package:tucky/Screens/Authentifications/logo_fade_screen.dart';
 import 'package:tucky/Screens/new_budget/budget_display.dart';
+import 'package:tucky/Screens/new_budget/list_provider.dart';
 import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,12 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ItemListProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

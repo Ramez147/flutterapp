@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tucky/Screens/new_budget/chart.dart';
+import 'package:tucky/Screens/new_budget/list_provider.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transaction.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transactions_datenbank.dart';
 import 'package:tucky/Screens/new_budget/Months_folder/month_datenbank.dart';
+import 'package:tucky/Screens/ChatBot/chatbot.dart'; // Falls ChatBot eine Route ist
 
 class TwoCardsScreen extends StatefulWidget {
   const TwoCardsScreen({super.key});
@@ -224,13 +227,52 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
     }
   }
 
+  // Methode zum Senden der Daten an Chatbot
+  Future<void> sendDataToChatbot() async {
+    try {
+      final chartDataText = await transactionDatabase.getChartDataAsText(picked.month);
+      
+      if (!mounted) return;
+      
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Chatbot(
+            initialMessage: chartDataText,
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Fehler beim Laden der Daten: $e')),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // MonthId beim Start setzen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ItemListProvider>(
+        context,
+        listen: false,
+      ).setMonthId(picked.month);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Zwei Cards Layout'),
-        centerTitle: true,
+        title: const Text('Budget'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.chat),
+            onPressed: sendDataToChatbot,
+            tooltip: 'An Chatbot senden',
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: ElevatedButton(
@@ -240,19 +282,16 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                   initialDate: DateTime.now(),
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2100),
-                  builder: (context, child) {
-                    return Theme(
-                      data: Theme.of(context).copyWith(
-                        // Anpassung des Designs
-                      ),
-                      child: child!,
-                    );
-                  },
                 );
                 if (picked != null) {
                   setState(() {
                     this.picked = picked;
                   });
+                  // MonthId aktualisieren
+                  Provider.of<ItemListProvider>(
+                    context,
+                    listen: false,
+                  ).setMonthId(picked.month);
                 }
               },
 
@@ -354,18 +393,13 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                             // ListView
                             Expanded(
                               child: StreamBuilder<List<Transaction>>(
-                                stream: transactionDatabase
-                                    .getTransactionsByMonthID(picked.month),
+                                stream: Provider.of<ItemListProvider>(
+                                  context,
+                                ).itemsStream,
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
+                                  if (!snapshot.hasData) {
                                     return const CircularProgressIndicator();
                                   }
-
-                                  if (snapshot.hasError) {
-                                    return Text('Fehler: ${snapshot.error}');
-                                  }
-
                                   final transactions = snapshot.data!;
 
                                   if (transactions.isEmpty) {
@@ -396,8 +430,12 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                                             color: Colors.red,
                                           ),
                                           onPressed: () {
-                                            transactionDatabase
-                                                .deleteTransaction(transaction);
+                                            final provider =
+                                                Provider.of<ItemListProvider>(
+                                                  context,
+                                                  listen: false,
+                                                );
+                                            provider.removeItem(transaction);
                                             if (mounted) {
                                               ScaffoldMessenger.of(
                                                 context,
