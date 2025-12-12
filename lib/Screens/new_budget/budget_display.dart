@@ -3,6 +3,7 @@ import 'package:tucky/Screens/new_budget/chart.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transaction.dart';
 import 'package:tucky/Screens/new_budget/transactions_fodler/transactions_datenbank.dart';
 import 'package:tucky/Screens/new_budget/Months_folder/month_datenbank.dart';
+
 class TwoCardsScreen extends StatefulWidget {
   const TwoCardsScreen({super.key});
 
@@ -11,7 +12,6 @@ class TwoCardsScreen extends StatefulWidget {
 }
 
 class _TwoCardsScreenState extends State<TwoCardsScreen> {
-  
   DateTime picked = DateTime.now();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
@@ -21,11 +21,11 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
 
   final TransactionDatenbank transactionDatabase = TransactionDatenbank();
 
-  Stream<List<Transaction>> get _TransactionsStream {
-    return transactionDatabase
-        .getTransactions(picked.month)
-        .asBroadcastStream();
-  }
+  // Stream<List<Transaction>> get _TransactionsStream {
+  //   return transactionDatabase
+  //       .getTransactions(picked.month)
+  //       .asBroadcastStream();
+  // }
 
   void addNewTransaction() {
     _amountController.clear();
@@ -202,7 +202,7 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
   }
 
   void saveBudget(double newBudget) async {
-      print("updateBudget START");
+    print("updateBudget START");
     MonthDatenbank monthDatabase = MonthDatenbank();
     try {
       print("calling getMonthsById...");
@@ -210,17 +210,19 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
       print("months loaded: $months");
       if (months != null) {
         print("calling updateBudget DB...");
-        await monthDatabase.updateBudget(months, newBudget.toDouble()); // updateModule -> updateBudget
+        await monthDatabase.updateBudget(
+          months,
+          newBudget.toDouble(),
+        ); // updateModule -> updateBudget
         print("DB update done");
       }
     } catch (e) {
       print('Error updating budget: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Fehler beim Aktualisieren: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Fehler beim Aktualisieren: $e')));
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -306,7 +308,7 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                           if (newBudget != null) {
                             saveBudget(newBudget);
                             transactionDatabase.getChartData(picked.month);
-                            
+
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -352,7 +354,8 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                             // ListView
                             Expanded(
                               child: StreamBuilder<List<Transaction>>(
-                                stream: _TransactionsStream,
+                                stream: transactionDatabase
+                                    .getTransactionsByMonthID(picked.month),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -376,7 +379,9 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                                     itemBuilder: (context, index) {
                                       final transaction = transactions[index];
                                       return ListTile(
-                                        title: Text(transaction.amount.toString()),
+                                        title: Text(
+                                          transaction.amount.toString(),
+                                        ),
                                         subtitle: Text(transaction.type),
                                         leading: CircleAvatar(
                                           backgroundColor: Colors.blue.shade100,
@@ -391,12 +396,18 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                                             color: Colors.red,
                                           ),
                                           onPressed: () {
-                                            transactionDatabase.deleteTransaction(transaction);
+                                            transactionDatabase
+                                                .deleteTransaction(transaction);
                                             if (mounted) {
-                                              ScaffoldMessenger.of(context).showSnackBar(
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
                                                 const SnackBar(
-                                                  content: Text('Element gelöscht'),
-                                                  backgroundColor: Colors.orange,
+                                                  content: Text(
+                                                    'Element gelöscht',
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.orange,
                                                 ),
                                               );
                                             }
@@ -420,17 +431,10 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
             const SizedBox(width: 16),
 
             // Rechte Card
-            Expanded(
-              flex: 1,
-              child: ChartDiagram(
-                monthId: picked.month,
-              ),
-            ),
+            Expanded(flex: 1, child: ChartDiagram(monthId: picked.month)),
           ],
         ),
       ),
     );
   }
 }
-
-

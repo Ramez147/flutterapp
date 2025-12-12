@@ -3,6 +3,58 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TransactionDatenbank {
   final SupabaseClient _client = Supabase.instance.client;
+  //  final RealtimeChannel _channel = Supabase.instance.client.channel('public:transaction');
+
+  // void startListening(int monthId, Function(List<Transaction>) onTransactionsUpdated) {
+  //   _channel
+  //       .onPostgresChanges(
+  //         event: PostgresChangeEvent.all,
+  //         schema: 'public',
+  //         table: 'transaction',
+  //         callback: (payload) {
+  //           print('Real-time event received: ${payload.eventType}');
+  //           getTransactionsByMonthID(monthId);
+  //           onTransactionsUpdated(_handlePayload(payload, monthId));
+  //         },
+  //       )
+  //       .subscribe();
+  // }
+  //  List<Transaction> _handlePayload(PostgresChangePayload payload, int monthId) {
+  //   // This is a simplified example - you'd need to maintain state
+  //   // or refetch based on the event type
+  //   switch (payload.eventType) {
+  //     case 'DELETE':
+  //       // Remove the deleted item from your local list
+  //       // payload.old contains the deleted record's data
+  //       break;
+  //     case 'INSERT':
+  //       // Add new item to your local list
+  //       break;
+  //     case 'UPDATE':
+  //       // Update existing item in your local list
+  //       break;
+  //     case PostgresChangeEvent.all:
+  //       // TODO: Handle this case.
+  //       throw UnimplementedError();
+  //     case PostgresChangeEvent.insert:
+  //       // TODO: Handle this case.
+  //       throw UnimplementedError();
+  //     case PostgresChangeEvent.update:
+  //       // TODO: Handle this case.
+  //       throw UnimplementedError();
+  //     case PostgresChangeEvent.delete:
+  //       // TODO: Handle this case.
+  //       throw UnimplementedError();
+  //   }
+  //   return []; // Return updated list
+  // }
+
+  // // 4. Clean up when done (call when disposing your widget/page)
+  // void stopListening() {
+  //   _channel.unsubscribe();
+  // }
+
+
 
   Future<void> createTransaction(Transaction newTransaction) async {
     try {
@@ -15,6 +67,15 @@ class TransactionDatenbank {
       rethrow;
     }
   }
+Stream<List<Transaction>> getTransactionsByMonthID(int monthId) => 
+  Supabase.instance.client
+    .from('transaction')
+    .stream(primaryKey: ['id'])
+    .eq('monthId', monthId)
+    .map((data) => data
+        .whereType<Map<String, dynamic>>()
+        .map((m) => Transaction.fromMap(m))
+        .toList());
 
   Stream<List<Transaction>> get stream {
     return _client.from('transaction').stream(primaryKey: ['id']).map((data) {
@@ -128,4 +189,6 @@ class TransactionDatenbank {
       };
     }).toList();
   }
+  
 }
+
