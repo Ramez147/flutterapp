@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:dio/dio.dart';
 // ignore: deprecated_member_use
-// import 'dart:html' as html; // Nur für Web
+import 'dart:html' as html; // Nur für Web
 import 'package:flutter/services.dart'; // Für Asset-Zugriff
 
 class FileDownloadService {
@@ -22,7 +22,7 @@ class FileDownloadService {
       // Plattform-Check
       if (kIsWeb) {
         // Web-spezifischer Download
-        // await _downloadForWeb(assetPath, fileName, context);
+        await _downloadForWeb(assetPath, fileName, context);
         
       } else {
         // Mobile/Desktop Download
@@ -35,36 +35,36 @@ class FileDownloadService {
     }
   }
 
-  // static Future<void> _downloadForWeb(
-  //   String assetPath,
-  //   String fileName,
-  //   BuildContext context,
-  // ) async {
-  //   try {
-  //     // Für Web: Lade Asset als ByteData und erstelle Blob-URL
-  //     final ByteData data = await rootBundle.load(assetPath);
-  //     final Uint8List bytes = data.buffer.asUint8List();
+  static Future<void> _downloadForWeb(
+    String assetPath,
+    String fileName,
+    BuildContext context,
+  ) async {
+    try {
+      // Für Web: Lade Asset als ByteData und erstelle Blob-URL
+      final ByteData data = await rootBundle.load(assetPath);
+      final Uint8List bytes = data.buffer.asUint8List();
 
-  //     // Erstelle Blob und URL
-  //     final blob = html.Blob([bytes]);
-  //     final url = html.Url.createObjectUrlFromBlob(blob);
+      // Erstelle Blob und URL
+      final blob = html.Blob([bytes]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
 
-  //     // Erstelle Anchor-Element für Download
-  //     // final anchor =
-  //     html.AnchorElement(href: url)
-  //       ..setAttribute('download', fileName)
-  //       ..click();
+      // Erstelle Anchor-Element für Download
+      // final anchor =
+      html.AnchorElement(href: url)
+        ..setAttribute('download', fileName)
+        ..click();
 
-  //     // Räume URL auf
-  //     html.Url.revokeObjectUrl(url);
+      // Räume URL auf
+      html.Url.revokeObjectUrl(url);
 
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text('Download gestartet')));
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Download gestartet')));
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   static Future<void> _downloadForMobile(
     String assetPath,

@@ -67,16 +67,16 @@ class MyNavigationDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.storage_outlined),
-            title: const Text('storage room'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Storageroom()),
-              );
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.storage_outlined),
+          //   title: const Text('storage room'),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => Storageroom()),
+          //     );
+          //   },
+          // ),
            ListTile(
             leading: const Icon(Icons.info),
             title: const Text('Über uns'),

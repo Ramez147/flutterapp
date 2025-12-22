@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:tucky/Drawer/EinstellungLayout/theme_manager.dart';
 import 'package:tucky/Screens/Authentifications/logo_fade_screen.dart';
 import 'package:tucky/Screens/new_budget/list_provider.dart';
@@ -31,11 +32,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: ThemeManager.themeMode,
-      builder: (context, themeMode, child) {
-        return MaterialApp(
-          theme: ThemeData.light(),
+    return Sizer(
+     builder: (context, orientation, deviceType) {
+       return ValueListenableBuilder<ThemeMode>(
+        valueListenable: ThemeManager.themeMode,
+        builder: (context, themeMode, child) {
+          return MaterialApp(
+            theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: themeMode,
           debugShowCheckedModeBanner: false,
@@ -44,6 +47,9 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+  );
+  }
+  
 }
 
 

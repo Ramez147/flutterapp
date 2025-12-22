@@ -367,6 +367,29 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
     }
   }
 
+  void _showChatbotDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: ClipRRect(
+            // Wichtig: ClipRRect hinzufügen
+            borderRadius: BorderRadius.circular(16.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.85,
+                maxHeight: MediaQuery.of(context).size.height * 0.7,
+              ),
+              child: Chatbot(),
+            ),
+          ),
+        );
+      },
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -499,6 +522,13 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
         ],
       ),
       drawer: MyNavigationDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showChatbotDialog(context);
+        },
+        backgroundColor: Color.fromARGB(255, 239, 195, 202),
+        child: Icon(Icons.chat_bubble_outline),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -757,23 +787,23 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                                                 fontSize: 16,
                                               ),
                                             ),
-                                            subtitle: Column(
+                                            subtitle: Row(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  transaction.type,
+                                                  '${transaction.type} - ${transaction.category}',
                                                   style: TextStyle(
                                                     color: textColor.withOpacity(0.6),
                                                   ),
                                                 ),
-                                                if (transaction.category.isNotEmpty)
-                                                  Text(
-                                                    transaction.category,
-                                                    style: TextStyle(
-                                                      color: textColor.withOpacity(0.5),
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
+                                                // if (transaction.category.isNotEmpty)
+                                                //   Text(
+                                                //     transaction.category,
+                                                //     style: TextStyle(
+                                                //       color: textColor.withOpacity(0.5),
+                                                //       fontSize: 12,
+                                                //     ),
+                                                //   ),
                                               ],
                                             ),
                                             trailing: IconButton(
@@ -864,7 +894,7 @@ class _TwoCardsScreenState extends State<TwoCardsScreen> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'Budget Übersicht',
+                            'Budget',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,

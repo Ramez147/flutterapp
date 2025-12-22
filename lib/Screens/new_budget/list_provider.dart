@@ -28,5 +28,6 @@ class ItemListProvider extends ChangeNotifier {
   // Item entfernen
   Future<void> removeItem(Transaction tra) async {
     await _datenbank.deleteTransaction(tra);
+    notifyListeners();
   }
 }

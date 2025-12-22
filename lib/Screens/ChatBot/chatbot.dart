@@ -85,7 +85,7 @@ class _ChatbotState extends State<Chatbot> {
   void initState() {
     super.initState();
     if (widget.initialMessage != null && widget.initialMessage!.isNotEmpty) {
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 2000), () {
         _messageController.text = widget.initialMessage!;
         _sendMessage();
       });

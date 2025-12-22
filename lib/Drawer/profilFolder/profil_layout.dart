@@ -105,7 +105,7 @@ class _ProfilState extends State<Profil> {
                           selectedImage = null;
                         });
                         Navigator.of(context).pop();
-                        _showSnackbar('Pokémon ausgewählt');
+                        _showSnackbar('Avatar ausgewählt');
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -382,11 +382,15 @@ class _ProfilState extends State<Profil> {
                   ],
                   const SizedBox(height: 12),
                   ElevatedButton(
-                    onPressed: (){}
-                    //  _submitProfile
-                    ,
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Freature ist in Entwicklung!'),
+                        backgroundColor: Colors.orange,),
+                        
+                      );
+                    },
                     child: const Text(
-                      'Submit',
+                      'Speichern',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

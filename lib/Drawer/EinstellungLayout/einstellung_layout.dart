@@ -13,51 +13,51 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _notifications = false;
+  // bool _notifications = false;
   String _language = 'Deutsch';
 
   @override
   void initState() {
     super.initState();
-    _setupFirebase();
+    // _setupFirebase();
   }
 
-  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  Future<void> _setupFirebase() async {
-    try {
-      await _messaging.requestPermission(alert: true, badge: true, sound: true);
-      final token = await _messaging.getToken();
-      debugPrint('FCM Token: $token');
-    } catch (e) {
-      debugPrint('FCM init fehlgeschlagen: $e');
-    }
-  }
+  // final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  // Future<void> _setupFirebase() async {
+  //   try {
+  //     await _messaging.requestPermission(alert: true, badge: true, sound: true);
+  //     final token = await _messaging.getToken();
+  //     debugPrint('FCM Token: $token');
+  //   } catch (e) {
+  //     debugPrint('FCM init fehlgeschlagen: $e');
+  //   }
+  // }
 
   void _onSwitchChanged(bool value) async {
   setState(() {
-    _notifications = value;
+    // _notifications = value;
   });
   
-  if (value) {
-    // Benachrichtigungen aktivieren
-    await _setupFirebase();
-  } else {
-    // Benachrichtigungen deaktivieren
-    await _messaging.deleteToken();
-    await _messaging.unsubscribeFromTopic('all');
-  }
+  // if (value) {
+  //   // Benachrichtigungen aktivieren
+  //   await _setupFirebase();
+  // } else {
+  //   // Benachrichtigungen deaktivieren
+  //   await _messaging.deleteToken();
+  //   await _messaging.unsubscribeFromTopic('all');
+  // }
   
-  if (mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(value 
-          ? 'Push-Benachrichtigungen aktiviert'
-          : 'Push-Benachrichtigungen deaktiviert'),
-        backgroundColor: value ? Colors.green : Colors.grey,
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
+  // if (mounted) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(value 
+  //         ? 'Push-Benachrichtigungen aktiviert'
+  //         : 'Push-Benachrichtigungen deaktiviert'),
+  //       backgroundColor: value ? Colors.green : Colors.grey,
+  //       duration: Duration(seconds: 2),
+  //     ),
+  //   );
+  // }
 }
 
   @override
@@ -98,27 +98,27 @@ class _SettingsPageState extends State<SettingsPage> {
               body: ListView(
                 children: [
                   // Benachrichtigungen
-                  _buildSettingsSection(
-                    title: 'Benachrichtigungen',
-                    fontSize: fontSize,
-                    backgroundColor: cardColor,
-                    textColor: textColor,
-                    subtitleColor: subtitleColor,
-                    children: [
-                      SwitchListTile(
-                        title: Text(
-                          'Push-Benachrichtigungen',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: textColor,
-                          ),
-                        ),
-                        value: _notifications,
-                        onChanged: _onSwitchChanged, // Direkt die Methode übergeben, nicht setState wrappen
-                        activeThumbColor: Color.fromARGB(255, 239, 195, 202),
-                      ),
-                    ],
-                  ),
+                  // _buildSettingsSection(
+                  //   title: 'Benachrichtigungen',
+                  //   fontSize: fontSize,
+                  //   backgroundColor: cardColor,
+                  //   textColor: textColor,
+                  //   subtitleColor: subtitleColor,
+                  //   children: [
+                  //     SwitchListTile(
+                  //       title: Text(
+                  //         'Push-Benachrichtigungen',
+                  //         style: TextStyle(
+                  //           fontSize: fontSize,
+                  //           color: textColor,
+                  //         ),
+                  //       ),
+                  //       value: _notifications,
+                  //       onChanged: _onSwitchChanged, // Direkt die Methode übergeben, nicht setState wrappen
+                  //       activeThumbColor: Color.fromARGB(255, 239, 195, 202),
+                  //     ),
+                  //   ],
+                  // ),
 
                   // Darstellung
                   _buildSettingsSection(
