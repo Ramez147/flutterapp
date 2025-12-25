@@ -7,14 +7,17 @@ import 'package:tucky/Screens/new_budget/list_provider.dart';
 import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
+
   await Supabase.initialize(
-    url: 'https://kwsteetnurtvvdhaxkwt.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3c3RlZXRudXJ0dnZkaGF4a3d0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1OTUxODIsImV4cCI6MjA3OTE3MTE4Mn0.4EnhjoEizAj6UEVBh2XVKOnVVyCvUDiY_8r4Xdv4DcM',
+    url: dotenv.env['SUPABASE_URL'] ?? '',
+    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
   );
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

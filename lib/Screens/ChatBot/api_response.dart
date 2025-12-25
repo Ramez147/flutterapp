@@ -1,12 +1,17 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatService {
   static const String apiUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
-  static const String apiKey = 'AIzaSyDNEBD-G0V9MbBWLT2ix39cAomsGZv8_Bs';
+  static final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
 
   Future<String> sendMessage(String message) async {
+    if (apiKey.isEmpty) {
+      return 'Fehler: API-Schlüssel nicht konfiguriert. Bitte .env-Datei überprüfen.';
+    }
+    
     try {
       final response = await http.post(
         Uri.parse('$apiUrl?key=$apiKey'),
