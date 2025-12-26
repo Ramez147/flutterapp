@@ -200,6 +200,20 @@ FIREBASE_IOS_API_KEY=...
 
 Eine vollständige Vorlage finden Sie in [.env.example](.env.example).
 
+### Docker-Nutzung
+
+#### Image pullen
+
+```bash
+docker pull ramez147/tucky:latest
+```
+
+#### Image Details
+
+- **Repository**: ramez147/tucky
+- **Tag**: latest (oder spezifische Version wie v1.0)
+- **Docker Hub**: https://hub.docker.com/r/ramez147/tucky
+
 ## 📊 Ausblick & zukünftige Features
 
 Tucky bietet eine solide Grundlage für moderne Finanzverwaltung. Die klare Trennung zwischen Authentifizierung (Firebase) und Datenhaltung (Supabase) ermöglicht hohe Skalierbarkeit.
@@ -212,5 +226,9 @@ Tucky bietet eine solide Grundlage für moderne Finanzverwaltung. Die klare Tren
 - 🔔 **Smart Notifications**: KI-basierte Ausgabenwarnungen
 
 ---
+
+## 👨‍💻 Entwickler
+
+Derbali Ramez: [GitHub](https://github.com/Ramez147)
 
 **Entwickelt mit ❤️ und Flutter**

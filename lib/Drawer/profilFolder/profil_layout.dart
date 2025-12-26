@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, unnecessary_this
+
 import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'dart:io';
